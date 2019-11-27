@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string-array name="Tshirt_size">
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL</item>
+        <item>XXL</item>
+    </string-array>
+
+</resources>
