@@ -21,13 +21,17 @@ import android.app.TimePickerDialog;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class create_eventsFragment extends Fragment {
     private int mYear, mMonth, mDay, mHour, mMinute;
     static final int DATE_DIALOG_ID = 0;
 
+    private DatePickerDialog mDatePickerDialog;
     private Button btnDatePicker, btnTimePicker;
     EditText txtDate, txtTime;
     private create_eventsViewModel sendViewModel;
@@ -47,20 +51,9 @@ public class create_eventsFragment extends Fragment {
         btnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("test", "clicked on btn date picker");
-                showDialog(DATE_DIALOG_ID);
+                mDatePickerDialog.show();
             }
         });
-
-
-        // get the current date
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        // display the current date
-        updateDisplay();
 
         btnTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,37 +62,27 @@ public class create_eventsFragment extends Fragment {
             }
         });
 
-//        final TextView textView = root.findViewById(R.id.btn_date);
-//
-//
-//        sendViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
         return root;
     }
 
-    private void updateDisplay() {
-        this.txtDate.setText(
-                new StringBuilder()
-                        // Month is 0 based so add 1
-                        .append(mMonth + 1).append("-")
-                        .append(mDay).append("-")
-                        .append(mYear).append(" "));
+    private void setDateTimeField() {
+
+        Calendar newCalendar = Calendar.getInstance();
+        mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                SimpleDateFormat sd = new SimpleDateFormat("dd-MM-yyyy");
+                final Date startDate = newDate.getTime();
+                String fdate = sd.format(startDate);
+
+                txtDate.setText(fdate);
+
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
     }
-
-    private DatePickerDialog.OnDateSetListener mDateSetListener =
-            new DatePickerDialog.OnDateSetListener() {
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
-                    mYear = year;
-                    mMonth = monthOfYear;
-                    mDay = dayOfMonth;
-                    updateDisplay();
-                }
-            };
-
 
 }
