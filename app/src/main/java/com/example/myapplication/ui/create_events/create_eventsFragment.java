@@ -48,6 +48,7 @@ public class create_eventsFragment extends Fragment {
         txtDate = (EditText) root.findViewById(R.id.in_date);
         txtTime = (EditText) root.findViewById(R.id.in_time);
 
+        setDateTimeField();
         btnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
