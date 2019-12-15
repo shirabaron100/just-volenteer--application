@@ -33,8 +33,8 @@ public class SignIn extends AppCompatActivity {
         to_log_up=findViewById(R.id.sign_up_now);
         log_in = findViewById(R.id.sign_in);
 
-        emailET = findViewById(R.id.email_IN_up);
-        passwordET = findViewById(R.id.password_IN_up);
+        emailET = findViewById(R.id.email_IN);
+        passwordET = findViewById(R.id.password_IN);
 
         auth = FirebaseAuth.getInstance();
 
