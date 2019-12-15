@@ -48,9 +48,9 @@ public class SignUp extends AppCompatActivity {
            // Init db
        database = FirebaseDatabase.getInstance();
 
-       mFullName =findViewById(R.id.name);
-       mEmail= findViewById(R.id.email_IN);
-       mPassword= findViewById(R.id.password_IN);
+       mFullName =findViewById(R.id.name_up);
+       mEmail= findViewById(R.id.email_IN_up);
+       mPassword= findViewById(R.id.password_IN_up);
        //mPhone= findViewById(R.id.);
        mRegisssterBtn= findViewById(R.id.register_now);
        mLginBtn= findViewById(R.id.already_login);
