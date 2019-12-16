@@ -63,7 +63,7 @@ public class SignIn extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
 
                                 logIn();
                             }

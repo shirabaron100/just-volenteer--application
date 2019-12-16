@@ -69,6 +69,8 @@ public class create_eventsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 addevent ();
+                clear_form();
+                Toast.makeText(getContext(), "אירוע נוצר בהצלחה!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -92,23 +94,34 @@ public class create_eventsFragment extends Fragment {
         });
 
 
-        location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Uri gm = Uri.parse("geo:0,0?q=");
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gm);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);
-                    }
-                }, 1000);
-            }
-        });
+//        location.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Uri gm = Uri.parse("geo:0,0?q=");
+//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gm);
+//                        mapIntent.setPackage("com.google.android.apps.maps");
+//                        startActivity(mapIntent);
+//                    }
+//                }, 1000);
+//            }
+//        });
 
         return root;
     }
+
+    private void clear_form() {
+
+        nameOfEvent.getText().clear();
+        txtDate.getText().clear();
+        txtTime.getText().clear();
+        location.getText().clear();
+        moreinfo.getText().clear();
+
+    }
+
     private void addevent () {
         String NameOfEvent = nameOfEvent.getText().toString();
         String Date = txtDate.getText().toString();

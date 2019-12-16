@@ -70,49 +70,50 @@ public class SignUp extends AppCompatActivity {
         mRegisssterBtn.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View view) {
-                                                  String email = mEmail.getText().toString().trim();
-                                                  String password = mPassword.getText().toString().trim();
+              String email = mEmail.getText().toString().trim();
+              String password = mPassword.getText().toString().trim();
 
-                                                  if (TextUtils.isEmpty(email)) {
-                                                      mEmail.setError("Email is Requierd.");
-                                                      return;
-                                                  }
+              if (TextUtils.isEmpty(email)) {
+                  mEmail.setError("Email is Requierd.");
+                  return;
+              }
 
-                                                  if (TextUtils.isEmpty(password)) {
-                                                      mPassword.setError("password is Requierd.");
-                                                      return;
-                                                  }
-                                                  if (password.length() < 6) {
-                                                      mPassword.setError("Password Must be>= 6 Characters");
-                                                      return;
-                                                  }
+              if (TextUtils.isEmpty(password)) {
+                  mPassword.setError("password is Requierd.");
+                  return;
+              }
+              if (password.length() < 6) {
+                  mPassword.setError("Password Must be>= 6 Characters");
+                  return;
+              }
 
-                                                  progressBar.setVisibility(view.VISIBLE);
+              progressBar.setVisibility(view.VISIBLE);
 
-                                                  fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                      @Override
-                                                      public void onComplete(@NonNull Task<AuthResult> task) {
-                                                          if (task.isSuccessful()) {
-                                                              Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
-                                                              startActivity(new Intent(getApplicationContext(), SignIn.class));
+              fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                  @Override
+                  public void onComplete(@NonNull Task<AuthResult> task) {
+                      if (task.isSuccessful()) {
+                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
 
-                                                              User user = new User(mEmail.getText().toString(), mFullName.getText().toString());
+                          User user = new User(mEmail.getText().toString(), mFullName.getText().toString());
 
-                                                              String uid = task.getResult().getUser().getUid();
+                          String uid = task.getResult().getUser().getUid();
 
-                                                              myRef = database.getReference("users/" + uid);
+                          myRef = database.getReference("users/" + uid);
 
-                                                              myRef.setValue(user);
+                          myRef.setValue(user);
 
-                                                          } else {
-                                                              Toast.makeText(SignUp.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                          }
-                                                      }
-                                                  });
+                          startActivity(new Intent(getApplicationContext(), SignIn.class));
 
-                                              }
+                      } else {
+                          Toast.makeText(SignUp.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                      }
+                  }
+              });
 
-                                          }
+          }
+
+      }
 
         );
     }

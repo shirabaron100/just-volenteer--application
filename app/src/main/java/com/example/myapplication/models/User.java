@@ -7,5 +7,22 @@ public class User {
     // name, email, tsize, phone
     private String name, email;
     private int phone;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     private char ch;
 }
