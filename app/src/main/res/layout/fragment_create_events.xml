@@ -2,47 +2,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/back"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <Button
         android:id="@+id/btn_date"
-        android:layout_width="238dp"
-        android:layout_height="57dp"
+        android:layout_width="80dp"
+        android:layout_height="58dp"
         android:text="SELECT DATE"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintEnd_toStartOf="@+id/in_date"
+        app:layout_constraintHorizontal_bias="0.722"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.241"
+        app:layout_constraintVertical_bias="0.246"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/in_time"
-        android:layout_width="231dp"
-        android:layout_height="43dp"
+        android:layout_width="206dp"
+        android:layout_height="58dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:hint="שעה"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_time"
-        app:layout_constraintVertical_bias="0.083"
+        app:layout_constraintHorizontal_bias="0.273"
+        app:layout_constraintStart_toEndOf="@+id/btn_time"
+        app:layout_constraintTop_toBottomOf="@+id/in_date"
+        app:layout_constraintVertical_bias="0.046"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/btn_time"
-        android:layout_width="235dp"
-        android:layout_height="59dp"
+        android:layout_width="80dp"
+        android:layout_height="58dp"
         android:layout_below="@+id/btn_date"
         android:layout_alignStart="@+id/btn_date"
         android:layout_alignLeft="@+id/btn_date"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="SELECT TIME"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/in_date"
         tools:ignore="MissingConstraints" />
@@ -50,7 +53,7 @@
     <EditText
         android:id="@+id/nameOfEVENT"
         android:layout_width="306dp"
-        android:layout_height="55dp"
+        android:layout_height="58dp"
         android:ems="10"
         android:hint="שם האירוע"
         android:inputType="textPersonName"
@@ -59,50 +62,64 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
+        app:layout_constraintVertical_bias="0.133" />
 
     <EditText
         android:id="@+id/in_date"
-        android:layout_width="231dp"
-        android:layout_height="43dp"
+        android:layout_width="206dp"
+        android:layout_height="58dp"
         android:ems="10"
         android:hint="תאריר"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.359" />
+        app:layout_constraintVertical_bias="0.247" />
 
     <EditText
         android:id="@+id/location_in"
-        android:layout_width="231dp"
-        android:layout_height="43dp"
+        android:layout_width="306dp"
+        android:layout_height="58dp"
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="מיקום אירוע"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/in_time"
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/info_in"
-        android:layout_width="231dp"
-        android:layout_height="46dp"
+        android:layout_width="306dp"
+        android:layout_height="58dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="מידע נוסף"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location_in"
-        app:layout_constraintVertical_bias="0.202" />
+        app:layout_constraintVertical_bias="0.078" />
+
+    <Button
+        android:id="@+id/save_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="44dp"
+        android:text="צור אירוע"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_in"
+        app:layout_constraintVertical_bias="0.514" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
