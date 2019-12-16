@@ -7,12 +7,8 @@ String time;
 String location;
 String moreInfo;
 
-    public void setNameOfEvent(String nameOfEvent) {
-        this.nameOfEvent = nameOfEvent;
-    }
+    public Event () {
 
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public Event(String nameOfEvent, String date, String time, String location, String moreInfo) {
@@ -21,6 +17,14 @@ String moreInfo;
         this.time = time;
         this.location = location;
         this.moreInfo = moreInfo;
+    }
+
+    public void setNameOfEvent(String nameOfEvent) {
+        this.nameOfEvent = nameOfEvent;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getNameOfEvent() {
@@ -53,5 +57,10 @@ String moreInfo;
 
     public void setMoreInfo(String moreInfo) {
         this.moreInfo = moreInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + this.getNameOfEvent() + "," + this.getDate() + ")";
     }
 }

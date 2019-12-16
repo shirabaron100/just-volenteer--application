@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.models.Event;
 import com.google.firebase.FirebaseApp;
@@ -25,14 +26,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class eventsFragment extends Fragment {
 
     private eventsViewModel eventsViewModel;
 
+    private FirebaseDatabase database;
     private DatabaseReference mRef;
 
-    private ArrayList<String> data = new ArrayList<>();
+    private ArrayList<Event> data = new ArrayList<>();
+    private ArrayList<String> data2 = new ArrayList<>();
+
+    private ArrayAdapter<Event> eventAdapter;
+    private ArrayAdapter<String> stringAdapter;
+
+    private List<Event> events;
 
     private ListView mListView;
 
@@ -42,80 +51,53 @@ public class eventsFragment extends Fragment {
                 ViewModelProviders.of(this).get(eventsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_events, container, false);
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, data);
-
         mListView = root.findViewById(R.id.event_list);
 
-        mRef = FirebaseDatabase.getInstance().getReference();
+        stringAdapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, data2);
+        
+        mListView.setAdapter(stringAdapter);
 
-        mListView.setAdapter(arrayAdapter);
+        // Get a reference to our posts
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("event");
 
-        mRef.addChildEventListener(new ChildEventListener() {
+// Attach a listener to read the data at our posts reference
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                String name = dataSnapshot.getValue(Event.class).getNameOfEvent();
-
-                data.add(name);
-
-                arrayAdapter.notifyDataSetChanged();
-
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Event> events = new ArrayList<>();
+                for(DataSnapshot dsChild : dataSnapshot.getChildren()) {
+                    Event event = dsChild.getValue(Event.class);
+                    events.add(event);
+                }
+                gotEventsFromFireBase(events);
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
             }
         });
 
-//        mRef.child("events").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                for(DataSnapshot ds : dataSnapshot.getChildren()){
-//
-//                    String date = ds.child("date").getValue(String.class);
-//
-//                    String location = ds.child("location").getValue(String.class);
-//
-//                    String moreInfo = ds.child("moreInfo").getValue(String.class);
-//
-//                    String name = ds.child("nameOfEvent").getValue(String.class);
-//
-//                    String time = ds.child("time").getValue(String.class);
-//
-//                    data.add(name);
-//
-//                    arrayAdapter.notifyDataSetChanged();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-//        events.addValueEventListener(valueEventListener);
-
-
         return root;
+    }
+
+    private void gotEventsFromFireBase(List<Event> events) {
+        this.events = events;
+        for(Event event : events) {
+            System.out.println(event);
+
+            String name = event.getNameOfEvent();
+            String date = event.getDate();
+            String info = event.getMoreInfo();
+            String location = event.getLocation();
+            String time = event.getTime();
+
+            data.add(event);
+            data2.add(name);
+
+            stringAdapter.notifyDataSetChanged();
+
+        }
     }
 }
