@@ -98,6 +98,7 @@ public class SignUp extends AppCompatActivity {
                           User user = new User(mEmail.getText().toString(), mFullName.getText().toString());
 
                           myRef = database.getReference("users");
+                          
 
                           myRef.setValue(user);
 
