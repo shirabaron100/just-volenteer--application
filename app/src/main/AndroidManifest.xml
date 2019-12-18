@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".SignUp"></activity>
         <activity android:name=".MainActivity" ></activity>
+        <activity android:name=".ui.create_events.event_fragment" />
 
     </application>
 

@@ -5,6 +5,7 @@ public class User {
     // name, email, tsize, phone
     private String name, email;
     private int phone;
+    private String key;
 
     public User(String name, String email) {
         this.email = email;
@@ -13,6 +14,14 @@ public class User {
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public void setName(String name) {

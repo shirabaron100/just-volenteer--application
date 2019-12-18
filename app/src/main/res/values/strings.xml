@@ -21,6 +21,9 @@
     <string name="menu_tools_h">כלים</string>
     <string name="menu_share_h">שתף</string>
     <string name="menu_send_h">צור אירוע</string>
+    <string name="more_info">עוד מידע</string>
+    <string name="join_event">הירשם לאירוע</string>
+    <string name="go_back">חזור</string>
 
     <string-array name="Tshirt_size">
         <item>10</item>

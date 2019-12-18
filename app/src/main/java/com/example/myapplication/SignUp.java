@@ -73,6 +73,13 @@ public class SignUp extends AppCompatActivity {
               String email = mEmail.getText().toString().trim();
               String password = mPassword.getText().toString().trim();
 
+              String name = mFullName.getText().toString();
+
+              if(!com.example.myapplication.models.TextUtils.isValidName(name)) {
+                  mFullName.setError("Name must contain only letters a-z or A-Z");
+                  return;
+              }
+
               if (TextUtils.isEmpty(email)) {
                   mEmail.setError("Email is Requierd.");
                   return;
@@ -87,27 +94,32 @@ public class SignUp extends AppCompatActivity {
                   return;
               }
 
-              progressBar.setVisibility(view.VISIBLE);
+              progressBar.setVisibility(View.VISIBLE);
 
               fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                   @Override
                   public void onComplete(@NonNull Task<AuthResult> task) {
                       if (task.isSuccessful()) {
-                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
 
-                          User user = new User(mEmail.getText().toString(), mFullName.getText().toString());
+//                          progressBar.setVisibility(View.VISIBLE);
 
-                          String key = myRef.child("users").push().getKey();
+                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_LONG).show();
+
+                          User user = new User(mFullName.getText().toString(), mEmail.getText().toString());
 
                           myRef = database.getReference("users");
 
+                          String key = myRef.push().getKey();
 
-                          myRef.setValue(user);
+                          user.setKey(key);
+
+                          myRef.child(key).setValue(user);
 
                           startActivity(new Intent(getApplicationContext(), SignIn.class));
 
                       } else {
-                          Toast.makeText(SignUp.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                          Toast.makeText(SignUp.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                          progressBar.setVisibility(View.INVISIBLE);
                       }
                   }
               });

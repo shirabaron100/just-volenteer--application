@@ -4,21 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.myapplication.MainActivity;
+import com.example.myapplication.CustomAdapter;
 import com.example.myapplication.R;
 import com.example.myapplication.models.Event;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,10 +30,8 @@ public class eventsFragment extends Fragment {
     private DatabaseReference mRef;
 
     private ArrayList<Event> data = new ArrayList<>();
-    private ArrayList<String> data2 = new ArrayList<>();
 
-    private ArrayAdapter<Event> eventAdapter;
-    private ArrayAdapter<String> stringAdapter;
+    private CustomAdapter myAdapter;
 
     private List<Event> events;
 
@@ -53,9 +45,9 @@ public class eventsFragment extends Fragment {
 
         mListView = root.findViewById(R.id.event_list);
 
-        stringAdapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, data2);
-        
-        mListView.setAdapter(stringAdapter);
+        myAdapter = new CustomAdapter(data, root.getContext());
+
+        mListView.setAdapter(myAdapter);
 
         // Get a reference to our posts
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -79,13 +71,14 @@ public class eventsFragment extends Fragment {
             }
         });
 
+//        mListView.setOnClick
+
         return root;
     }
 
     private void gotEventsFromFireBase(List<Event> events) {
         this.events = events;
         for(Event event : events) {
-            System.out.println(event);
 
             String name = event.getNameOfEvent();
             String date = event.getDate();
@@ -94,9 +87,9 @@ public class eventsFragment extends Fragment {
             String time = event.getTime();
 
             data.add(event);
-            data2.add(name);
 
-            stringAdapter.notifyDataSetChanged();
+            myAdapter.setEvent(event);
+            myAdapter.notifyDataSetChanged();
 
         }
     }

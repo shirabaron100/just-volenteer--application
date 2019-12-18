@@ -39,7 +39,7 @@ public class create_eventsFragment extends Fragment {
     private TimePickerDialog mTimePickerDialog;
 
     private Button btnDatePicker, btnTimePicker,saveEvent;
-    EditText txtDate, txtTime, location,moreinfo, nameOfEvent ;
+    private EditText txtDate, txtTime, location,moreinfo, nameOfEvent ;
 
 
     private create_eventsViewModel sendViewModel;
@@ -132,6 +132,7 @@ public class create_eventsFragment extends Fragment {
         if (!TextUtils.isEmpty(NameOfEvent)) {
             String id=DbEvent.push().getKey();
             Event event = new Event(NameOfEvent, Date, time, Location, MoreInfo);
+            event.setKey(id);
             DbEvent.child(id).setValue(event);
         }
 

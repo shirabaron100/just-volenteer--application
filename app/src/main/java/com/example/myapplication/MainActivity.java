@@ -2,17 +2,27 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.util.Log;
+
+import com.example.myapplication.models.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -30,6 +40,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -41,19 +52,19 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnDatePicker, btnTimePicker;
     EditText txtDate, txtTime;
+    TextView user_name, user_email;
+
+    private FirebaseDatabase database;
+    private DatabaseReference mRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("activity main", "main activity..");
-        System.out.println("main activity up");
-        System.out.printf("main activity up");
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -76,6 +87,53 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        navigationView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                navigationView.removeOnLayoutChangeListener(this);
+
+                user_email = navigationView.findViewById(R.id.header_email);
+                user_name = navigationView.findViewById(R.id.header_name);
+
+                final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                user_email.setText(currentFirebaseUser.getEmail());
+
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference("users");
+
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot dsChild : dataSnapshot.getChildren()) {
+
+                            User user = dsChild.getValue(User.class);
+//                            System.out.println(currentFirebaseUser.getEmail());
+//                            System.out.println(user.getEmail());
+                            if(user.getEmail().equals(currentFirebaseUser.getEmail())) {
+//                                System.out.println(user.getName());
+                                user_name.setText(user.getName());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+
+
+
+//        // Get a reference to our posts
+//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = database.getReference("users");
+
+
     }
 
     @Override

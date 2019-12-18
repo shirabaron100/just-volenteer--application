@@ -1,11 +1,14 @@
 package com.example.myapplication.models;
 
-public class Event {
-String nameOfEvent;
-String date;
-String time;
-String location;
-String moreInfo;
+import java.io.Serializable;
+
+public class Event implements Serializable {
+    private String nameOfEvent;
+    private String date;
+    private String time;
+    private String location;
+    private String moreInfo;
+    private String key;
 
     public Event () {
 
@@ -17,6 +20,14 @@ String moreInfo;
         this.time = time;
         this.location = location;
         this.moreInfo = moreInfo;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public void setNameOfEvent(String nameOfEvent) {
