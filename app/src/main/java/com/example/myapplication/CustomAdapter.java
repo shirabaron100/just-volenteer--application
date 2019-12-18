@@ -76,6 +76,8 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
                 //do something
                 Intent intent = new Intent(context, event_fragment.class);
                 intent.putExtra("event", event);
+//                intent.putExtra("name", event.getNameOfEvent());
+//                intent.putExtra("location", event.getLocation());
                 context.startActivity(intent);
 
 //                startActivity(intent);

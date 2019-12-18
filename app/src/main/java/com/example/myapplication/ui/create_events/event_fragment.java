@@ -31,23 +31,24 @@ public class event_fragment extends AppCompatActivity {
 
         Intent intent = getIntent();
         Event event = (Event) intent.getSerializableExtra("event");
+        String name = (String) intent.getStringExtra("name");
 
-        System.out.println(event);
+        System.out.println(name);
 
-        txtDate = (EditText) findViewById(R.id.in_date);
-        txtTime = (EditText) findViewById(R.id.in_time);
-        nameOfEvent = (EditText) findViewById(R.id.nameOfEVENT);
-        location = (EditText) findViewById(R.id.location_in);
-        moreinfo = (EditText) findViewById(R.id.info_in);
+        txtDate = (EditText) findViewById(R.id.event_date);
+        txtTime = (EditText) findViewById(R.id.event_time);
+        nameOfEvent = (EditText) findViewById(R.id.event_name);
+        location = (EditText) findViewById(R.id.event_location);
+        moreinfo = (EditText) findViewById(R.id.event_info);
 
         go_back = (Button) findViewById(R.id.event_go_back);
         register = (Button) findViewById(R.id.event_register);
 
-//        txtDate.setText(event.getDate());
-//        txtTime.setText(event.getTime());
-//        nameOfEvent.setText(event.getNameOfEvent());
-//        location.setText(event.getLocation());
-//        moreinfo.setText(event.getMoreInfo());
+        txtDate.setText(event.getDate());
+        txtTime.setText(event.getTime());
+        nameOfEvent.setText(event.getNameOfEvent());
+        location.setText(event.getLocation());
+        moreinfo.setText(event.getMoreInfo());
 
 
         // GO BACK TO MAIN SCREEN

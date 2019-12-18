@@ -167,6 +167,7 @@ public class create_eventsFragment extends Fragment {
                 SimpleDateFormat sd = new SimpleDateFormat("dd-MM-yyyy");
                 final Date startDate = newDate.getTime();
                 String fdate = sd.format(startDate);
+                mDatePickerDialog.getDatePicker().setMinDate(startDate.getTime()-(startDate.getTime()%(24*60*60*1000)));
 
                 txtDate.setText(fdate);
 
