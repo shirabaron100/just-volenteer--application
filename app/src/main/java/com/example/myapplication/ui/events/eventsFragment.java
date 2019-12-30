@@ -88,7 +88,7 @@ public class eventsFragment extends Fragment {
 
             data.add(event);
 
-            myAdapter.setEvent(event);
+//            myAdapter.setEvent(event);
             myAdapter.notifyDataSetChanged();
 
         }

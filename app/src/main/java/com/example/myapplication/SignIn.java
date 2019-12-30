@@ -69,6 +69,7 @@ public class SignIn extends AppCompatActivity {
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "Login failed! Please try again later", Toast.LENGTH_SHORT).show();
+//                                return;
                             }
                         }
                     });

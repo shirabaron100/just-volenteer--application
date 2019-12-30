@@ -10,6 +10,8 @@ public class Event implements Serializable {
     private String moreInfo;
     private String key;
 
+
+
     public Event () {
 
     }

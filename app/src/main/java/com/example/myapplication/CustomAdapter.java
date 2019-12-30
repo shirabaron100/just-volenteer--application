@@ -10,14 +10,9 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
-
 import com.example.myapplication.models.Event;
-import com.example.myapplication.ui.create_events.event_fragment;
+import com.example.myapplication.ui.events.event_fragment;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class CustomAdapter extends BaseAdapter implements ListAdapter {
@@ -75,7 +70,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
                 //do something
                 Intent intent = new Intent(context, event_fragment.class);
-                intent.putExtra("event", event);
+                intent.putExtra("event", list.get(position));
 //                intent.putExtra("name", event.getNameOfEvent());
 //                intent.putExtra("location", event.getLocation());
                 context.startActivity(intent);

@@ -24,6 +24,8 @@
     <string name="more_info">עוד מידע</string>
     <string name="join_event">הירשם לאירוע</string>
     <string name="go_back">חזור</string>
+    <string name="cancel_registration">ביטול הרשמה</string>
+    <string name="LogOut">LogOut</string>
 
     <string-array name="Tshirt_size">
         <item>10</item>
