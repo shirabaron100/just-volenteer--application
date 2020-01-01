@@ -107,13 +107,15 @@ public class SignUp extends AppCompatActivity {
 
                           User user = new User(mFullName.getText().toString(), mEmail.getText().toString());
 
-                          myRef = database.getReference("users");
+                          myRef = database.getReference("Users");
 
                           String key = myRef.push().getKey();
 
+//                          System.out.println(fAuth.getCurrentUser().getUid());
+
                           user.setKey(key);
 
-                          myRef.child(key).setValue(user);
+                          myRef.child(fAuth.getCurrentUser().getUid()).setValue(user);
 
                           startActivity(new Intent(getApplicationContext(), SignIn.class));
 

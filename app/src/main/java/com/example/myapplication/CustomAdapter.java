@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,20 +11,31 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.myapplication.models.Event;
 import com.example.myapplication.ui.events.event_fragment;
+import com.example.myapplication.ui.profile.profileFragment;
 
 import java.util.ArrayList;
+
+
 
 public class CustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<Event> list = new ArrayList<Event>();
     private Context context;
     private Event event;
+    private Boolean flag = false;
 
     public CustomAdapter(ArrayList<Event> list, Context context) {
         this.list = list;
         this.context = context;
     }
+
+    public void setFlag(Boolean flag) { this.flag = flag; }
 
     public void setEvent(Event event) {
         this.event = event;
@@ -68,14 +80,26 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
         callbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
                 //do something
                 Intent intent = new Intent(context, event_fragment.class);
                 intent.putExtra("event", list.get(position));
+                if(flag) {
+                    intent.putExtra("profile", true);
+//                    intent = new Intent(context, profileFragment.class);
+                    flag = false;
+
+//                    Fragment fragment = new profileFragment();
+//                    AppCompatActivity activity = (AppCompatActivity)context.getApplicationContext();
+//                    FragmentManager fm = activity.getSupportFragmentManager();
+//                    FragmentTransaction ft = fm.beginTransaction();
+//                    ft.replace(R.id.content_frame, fragment);
+//                    ft.commit();
+                }
 //                intent.putExtra("name", event.getNameOfEvent());
 //                intent.putExtra("location", event.getLocation());
                 context.startActivity(intent);
 
-//                startActivity(intent);
                 notifyDataSetChanged();
             }
         });
@@ -89,4 +113,5 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
 
         return view;
     }
+
 }

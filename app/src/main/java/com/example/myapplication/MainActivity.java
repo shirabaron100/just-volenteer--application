@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 user_email.setText(currentFirebaseUser.getEmail());
 
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference("users");
+                DatabaseReference ref = database.getReference("Users");
 
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override

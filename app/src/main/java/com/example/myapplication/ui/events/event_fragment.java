@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myapplication.MainActivity;
@@ -41,8 +43,9 @@ public class event_fragment extends AppCompatActivity {
         Intent intent = getIntent();
         event = (Event) intent.getSerializableExtra("event");
         String name = (String) intent.getStringExtra("name");
+        final Boolean flag = intent.getBooleanExtra("profile", false);
 
-        System.out.println(name);
+        System.out.println(flag);
 
         txtDate = (EditText) findViewById(R.id.event_date);
         txtTime = (EditText) findViewById(R.id.event_time);
@@ -92,8 +95,21 @@ public class event_fragment extends AppCompatActivity {
         go_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                if(!flag) {
+
+//                    FragmentTransaction t = getFragmentManager().beginTransaction();
+//                    Fragment mFrag = new eventsFragment();
+//                    t.replace(R.id.content_frame, mFrag);
+//                    t.commit();
+
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -108,11 +124,9 @@ public class event_fragment extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "הרשמה בוצעה בהצלחה", Toast.LENGTH_LONG).show();
 
-                //register the event to the users profile
-                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference ref = database.getReference("users");
+                final DatabaseReference ref2 = database.getReference("Users");
 
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                ref2.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -121,8 +135,8 @@ public class event_fragment extends AppCompatActivity {
                             System.out.println(ds.getValue());
                             System.out.println(user.getEmail());
                             if(c_mail.equals(user.getEmail())) {
-                                System.out.println("wow.. ");
-                                ref.child(user.getKey()).child("myEvents").child(event.getKey()).setValue(event);
+//                                System.out.println("wow.. ");
+                                ref2.child(auth.getCurrentUser().getUid()).child("myEvents").child(event.getKey()).setValue(event);
                             }
                         }
                     }
@@ -153,6 +167,28 @@ public class event_fragment extends AppCompatActivity {
                 ref.child("Participants").child(uid).removeValue();
 
                 Toast.makeText(getApplicationContext(), "ביטול הרשמה מהאירוע בוצע בהצלחה!", Toast.LENGTH_LONG).show();
+
+                final DatabaseReference ref2 = database.getReference("Users");
+
+                ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                            String c_mail = auth.getCurrentUser().getEmail();
+                            User user = (User) ds.getValue(User.class);
+
+                            if(c_mail.equals(user.getEmail())) {
+//                                System.out.println("wow.. ");
+                                ref2.child(auth.getCurrentUser().getUid()).child("myEvents").child(event.getKey()).removeValue();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
                 register.setVisibility(View.VISIBLE);
                 cancel.setVisibility(View.INVISIBLE);
