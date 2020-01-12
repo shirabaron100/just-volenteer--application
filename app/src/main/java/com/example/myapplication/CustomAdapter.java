@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,14 +10,8 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.example.myapplication.models.Event;
-import com.example.myapplication.ui.events.event_fragment;
-import com.example.myapplication.ui.profile.profileFragment;
+import com.example.myapplication.ui.events.events_more_info;
 
 import java.util.ArrayList;
 
@@ -82,7 +75,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
 
                 //do something
-                Intent intent = new Intent(context, event_fragment.class);
+                Intent intent = new Intent(context, events_more_info.class);
                 intent.putExtra("event", list.get(position));
                 if(flag) {
                     intent.putExtra("profile", true);

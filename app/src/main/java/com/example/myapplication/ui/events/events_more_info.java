@@ -28,7 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class event_fragment extends AppCompatActivity {
+public class events_more_info extends AppCompatActivity {
 
     private EditText txtDate, txtTime, location, moreinfo, nameOfEvent ;
 
@@ -63,6 +63,7 @@ public class event_fragment extends AppCompatActivity {
         location.setText(event.getLocation());
         moreinfo.setText(event.getMoreInfo());
 
+        enable_info_edit(false);
 
         // Get a reference to our posts
         final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -200,6 +201,16 @@ public class event_fragment extends AppCompatActivity {
     private void registerToEvent()  {
 
 
+
+    }
+
+    private void enable_info_edit(Boolean flag) {
+
+        nameOfEvent.setEnabled(flag);
+        txtDate.setEnabled(flag);
+        txtTime.setEnabled(flag);
+        location.setEnabled(flag);
+        moreinfo.setEnabled(flag);
 
     }
 

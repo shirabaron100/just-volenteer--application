@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         navigationView.getMenu().findItem(R.id.nav_create_events).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_tools).setVisible(false);
         NavigationUI.setupWithNavController(navigationView, navController);
 
         navigationView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 //                                System.out.println(user.getName());
                                 if(user.getAmota()){
                                     navigationView.getMenu().findItem(R.id.nav_create_events).setVisible(true);
+                                    navigationView.getMenu().findItem(R.id.nav_tools).setVisible(true);
                                 }
                                 user_name.setText(user.getName());
                             }
