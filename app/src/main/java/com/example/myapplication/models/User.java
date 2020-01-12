@@ -6,6 +6,7 @@ public class User {
     private String name, email;
     private int phone;
     private String key;
+    private Boolean permissions;
 
     public User(String name, String email) {
         this.email = email;
@@ -14,6 +15,14 @@ public class User {
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
+
+    public Boolean getAmota() {
+        return permissions;
+    }
+
+    public void setAmota(Boolean amota) {
+        permissions = amota;
     }
 
     public String getKey() {

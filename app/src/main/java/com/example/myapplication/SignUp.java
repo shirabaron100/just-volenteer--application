@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
@@ -34,6 +36,9 @@ public class SignUp extends AppCompatActivity {
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
 
+    Switch aSwitch;
+    private Boolean switch_flag = false;
+
     // DB
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -54,6 +59,17 @@ public class SignUp extends AppCompatActivity {
         mLginBtn = findViewById(R.id.already_login);
         fAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar2);
+        aSwitch = findViewById(R.id.switch1);
+
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    switch_flag = true;
+                }
+            }
+        });
 
 //        if (fAuth.getCurrentUser() != null) {
 //            startActivity(new Intent(getApplicationContext(), SignIn.class));
@@ -114,6 +130,7 @@ public class SignUp extends AppCompatActivity {
 //                          System.out.println(fAuth.getCurrentUser().getUid());
 
                           user.setKey(key);
+                          user.setAmota(switch_flag);
 
                           myRef.child(fAuth.getCurrentUser().getUid()).setValue(user);
 
