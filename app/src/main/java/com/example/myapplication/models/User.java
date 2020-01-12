@@ -7,6 +7,7 @@ public class User {
     private int phone;
     private String key;
     private Boolean permissions;
+    
 
     public User(String name, String email) {
         this.email = email;
