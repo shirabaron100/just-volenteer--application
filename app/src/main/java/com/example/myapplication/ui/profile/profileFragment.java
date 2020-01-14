@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myapplication.CustomAdapter;
+import com.example.myapplication.FirebaseAdapter;
 import com.example.myapplication.R;
 import com.example.myapplication.models.Event;
 import com.example.myapplication.models.User;
@@ -36,6 +37,7 @@ public class profileFragment extends Fragment {
 
     private FirebaseDatabase database;
     private DatabaseReference mRef;
+    private FirebaseAdapter firebaseAdapter = new FirebaseAdapter();
 
     private TextView profile_email, profile_name;
 
@@ -61,10 +63,9 @@ public class profileFragment extends Fragment {
         mListView.setAdapter(myAdapter);
 
         // Get a reference to our posts
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Users");
+        final DatabaseReference ref = firebaseAdapter.getUsersRef();
 
-        final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser currentFirebaseUser = firebaseAdapter.getFirebaseUser();
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,6 +90,14 @@ public class profileFragment extends Fragment {
 
                             }
 
+                        }
+                        else if(ds.hasChild("my Created Events")) {
+                            for(DataSnapshot dsc : ds.child("my Created Events").getChildren()) {
+                                Event event = dsc.getValue(Event.class);
+                                data.add(event);
+                                myAdapter.setFlag(true);
+                                myAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                 }

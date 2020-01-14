@@ -26,6 +26,7 @@
     <string name="go_back">חזור</string>
     <string name="cancel_registration">ביטול הרשמה</string>
     <string name="LogOut">LogOut</string>
+    <string name="share_event">שתף</string>
 
     <string-array name="Tshirt_size">
         <item>10</item>

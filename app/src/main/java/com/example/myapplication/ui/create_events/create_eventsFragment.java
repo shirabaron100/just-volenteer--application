@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -21,8 +22,10 @@ import androidx.core.text.TextUtilsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.myapplication.FirebaseAdapter;
 import com.example.myapplication.R;
 import com.example.myapplication.models.Event;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -34,9 +37,13 @@ import java.util.Date;
 public class create_eventsFragment extends Fragment {
     private int mYear, mMonth, mDay, mHour, mMinute;
     static final int DATE_DIALOG_ID = 0;
-    DatabaseReference DbEvent;
+
     private DatePickerDialog mDatePickerDialog;
     private TimePickerDialog mTimePickerDialog;
+
+    private DatabaseReference eventsRef;
+    private DatabaseReference usersRef;
+    private FirebaseAdapter firebaseAdapter = new FirebaseAdapter();
 
     private Button btnDatePicker, btnTimePicker,saveEvent;
     private EditText txtDate, txtTime, location,moreinfo, nameOfEvent ;
@@ -46,7 +53,10 @@ public class create_eventsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DbEvent= FirebaseDatabase.getInstance().getReference("event");
+
+        eventsRef = firebaseAdapter.getEventsRef();
+        usersRef = firebaseAdapter.getUsersRef();
+
         sendViewModel =
                 ViewModelProviders.of(this).get(create_eventsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_create_events, container, false);
@@ -60,8 +70,10 @@ public class create_eventsFragment extends Fragment {
         location = (EditText) root.findViewById(R.id.location_in);
         moreinfo= (EditText) root.findViewById(R.id.info_in);
 
-
-        location = (EditText) root.findViewById(R.id.location_in);
+        txtDate.setClickable(false);
+        txtDate.setFocusable(false);
+        txtTime.setClickable(false);
+        txtTime.setFocusable(false);
 
         setDateTimeField();
 
@@ -69,7 +81,6 @@ public class create_eventsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 addevent ();
-                clear_form();
                 Toast.makeText(getContext(), "אירוע נוצר בהצלחה!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -93,22 +104,6 @@ public class create_eventsFragment extends Fragment {
             }
         });
 
-
-//        location.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Uri gm = Uri.parse("geo:0,0?q=");
-//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gm);
-//                        mapIntent.setPackage("com.google.android.apps.maps");
-//                        startActivity(mapIntent);
-//                    }
-//                }, 1000);
-//            }
-//        });
-
         return root;
     }
 
@@ -129,13 +124,39 @@ public class create_eventsFragment extends Fragment {
         String Location = location.getText().toString();
         String MoreInfo = moreinfo.getText().toString();
 
-        if (!TextUtils.isEmpty(NameOfEvent)) {
-            String id=DbEvent.push().getKey();
-            Event event = new Event(NameOfEvent, Date, time, Location, MoreInfo);
-            event.setKey(id);
-            DbEvent.child(id).setValue(event);
+        if(TextUtils.isEmpty(NameOfEvent)) {
+            nameOfEvent.setError("Please fill this line!");
+            return;
         }
 
+        if (TextUtils.isEmpty(Date)) {
+            txtDate.setError("Please fill this line!");
+            return;
+        }
+
+        if (TextUtils.isEmpty(time)) {
+            txtTime.setError("Please fill this line!");
+            return;
+        }
+        if (TextUtils.isEmpty(Location)) {
+            location.setError("Please fill this line!");
+            return;
+        }
+        if (TextUtils.isEmpty(MoreInfo)) {
+            moreinfo.setError("Please fill this line!");
+            return;
+        }
+
+
+        final FirebaseAuth auth = firebaseAdapter.getAuthInstance();
+
+        String id = eventsRef.push().getKey();
+        Event event = new Event(NameOfEvent, Date, time, Location, MoreInfo);
+        event.setKey(id);
+        eventsRef.child(auth.getCurrentUser().getUid()).child(id).setValue(event);
+        usersRef.child(auth.getCurrentUser().getUid()).child("my Created Events").child(id).setValue(event);
+
+        clear_form();
     }
     private void setmTimePicker() {
 
@@ -159,7 +180,7 @@ public class create_eventsFragment extends Fragment {
     private void setDateTimeField() {
 
         Calendar newCalendar = Calendar.getInstance();
-                mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
@@ -167,13 +188,13 @@ public class create_eventsFragment extends Fragment {
                 SimpleDateFormat sd = new SimpleDateFormat("dd-MM-yyyy");
                 final Date startDate = newDate.getTime();
                 String fdate = sd.format(startDate);
-                mDatePickerDialog.getDatePicker().setMinDate(startDate.getTime()-(startDate.getTime()%(24*60*60*1000)));
+//                mDatePickerDialog.getDatePicker();
 
                 txtDate.setText(fdate);
 
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        mDatePickerDialog.getDatePicker();
 
     }
 

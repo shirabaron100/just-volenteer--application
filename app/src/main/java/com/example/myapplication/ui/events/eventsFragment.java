@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myapplication.CustomAdapter;
+import com.example.myapplication.FirebaseAdapter;
 import com.example.myapplication.R;
 import com.example.myapplication.models.Event;
 import com.google.firebase.database.DataSnapshot;
@@ -19,15 +20,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class eventsFragment extends Fragment {
 
     private eventsViewModel eventsViewModel;
 
-    private FirebaseDatabase database;
-    private DatabaseReference mRef;
+    private FirebaseAdapter firebaseAdapter = new FirebaseAdapter();
 
     private ArrayList<Event> data = new ArrayList<>();
 
@@ -49,19 +52,44 @@ public class eventsFragment extends Fragment {
 
         mListView.setAdapter(myAdapter);
 
-        // Get a reference to our posts
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("event");
+        final List<Event> events = new ArrayList<>();
 
-// Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
+        // Get a reference to our posts
+        DatabaseReference eventsRef = firebaseAdapter.getEventsRef();
+
+        eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Event> events = new ArrayList<>();
+
                 for(DataSnapshot dsChild : dataSnapshot.getChildren()) {
-                    Event event = dsChild.getValue(Event.class);
-                    events.add(event);
+                    for (DataSnapshot ds : dsChild.getChildren()) {
+                        Event event = ds.getValue(Event.class);
+                        System.out.println(ds.getValue().toString());
+
+                        //use simple date format to read string as a date
+                        SimpleDateFormat dateF = new SimpleDateFormat("dd-MM-yyyy");
+                        SimpleDateFormat timeF = new SimpleDateFormat("HH:mm");
+                        try {
+                            Date d = dateF.parse(event.getDate());
+                            Date x = timeF.parse(event.getTime());
+
+                            long s = System.currentTimeMillis();
+
+                            if (d.getTime() < s && x.getTime() < s){
+                                //remove event from event list !
+                                System.out.println("event has expired !");
+                            }
+                            else {
+                                events.add(event);
+                            }
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
                 }
+
                 gotEventsFromFireBase(events);
             }
 
@@ -70,8 +98,6 @@ public class eventsFragment extends Fragment {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
-
-//        mListView.setOnClick
 
         return root;
     }
@@ -88,7 +114,6 @@ public class eventsFragment extends Fragment {
 
             data.add(event);
 
-//            myAdapter.setEvent(event);
             myAdapter.notifyDataSetChanged();
 
         }
