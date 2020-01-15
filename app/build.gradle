@@ -43,5 +43,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.3.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
 
+    implementation 'com.applandeo:material-calendar-view:1.4.0'
+    //https://github.com/mahimrocky/EventCalender
+    implementation 'com.github.mahimrocky:EventCalender:v1.0.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
